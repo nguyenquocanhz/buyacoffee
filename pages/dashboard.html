@@ -60,10 +60,25 @@
         .apexcharts-tooltip { background: #fff; color: #333; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         .dark .apexcharts-tooltip { background: #1f2937; color: #fff; }
 
-        /* Animation for removing rows */
         .fade-out { opacity: 0; transform: translateX(20px); transition: all 0.3s ease; }
         .fade-in-up { animation: fadeInUp 0.3s ease-out forwards; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Dropdown transition */
+        #userDropdown {
+            transition: all 0.2s ease-in-out;
+            transform-origin: top right;
+        }
+        .dropdown-hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+        .dropdown-visible {
+            opacity: 1;
+            transform: scale(100%);
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -80,243 +95,297 @@
                     <span class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">DevSupport <span class="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full ml-2">Admin</span></span>
                 </div>
 
-                <!-- User Menu -->
+                <!-- Right Side Actions -->
                 <div class="flex items-center gap-4">
-                    <button onclick="document.documentElement.classList.toggle('dark')" class="p-2 text-gray-500 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
+                    <!-- Dark Mode Toggle -->
+                    <button onclick="document.documentElement.classList.toggle('dark')" class="p-2 text-gray-500 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors focus:outline-none">
                          <span class="hidden dark:inline-block"><i class="fa-solid fa-sun"></i></span>
                         <span class="inline-block dark:hidden"><i class="fa-solid fa-moon"></i></span>
                     </button>
-                    <div class="flex items-center gap-3">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-9 h-9 rounded-full bg-gray-100 border border-gray-200">
-                        <span class="hidden sm:block font-medium text-sm">Alex Nguyễn</span>
+
+                    <!-- User Menu Dropdown -->
+                    <div class="relative">
+                        <button id="userMenuBtn" class="flex items-center gap-3 focus:outline-none hover:bg-gray-100 dark:hover:bg-gray-800 p-1.5 pr-3 rounded-full transition-colors group">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-8 h-8 rounded-full bg-gray-100 border border-gray-200">
+                            <span class="hidden sm:block font-medium text-sm group-hover:text-coffee-600 transition-colors">Alex Nguyễn</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-hover:text-coffee-600 transition-colors ml-1"></i>
+                        </button>
+
+                        <!-- Dropdown Content -->
+                        <div id="userDropdown" class="dropdown-hidden absolute right-0 mt-2 w-60 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden">
+                            <!-- User Info Header -->
+                            <div class="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800">
+                                <p class="text-sm font-bold text-gray-900 dark:text-white truncate">Alex Nguyễn</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">alex@example.com</p>
+                            </div>
+                            
+                            <!-- Menu Items -->
+                            <nav class="p-2 space-y-1">
+                                <button onclick="switchTab('settings')" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-coffee-50 hover:text-coffee-600 dark:hover:bg-gray-700 dark:hover:text-white flex items-center gap-3 transition-colors group">
+                                    <span class="w-6 text-center text-gray-400 group-hover:text-coffee-500"><i class="fa-solid fa-user-gear"></i></span>
+                                    Profile & Cài đặt
+                                </button>
+                                <button onclick="switchTab('analytics')" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-coffee-50 hover:text-coffee-600 dark:hover:bg-gray-700 dark:hover:text-white flex items-center gap-3 transition-colors group">
+                                    <span class="w-6 text-center text-gray-400 group-hover:text-coffee-500"><i class="fa-solid fa-chart-line"></i></span>
+                                    Thống kê
+                                </button>
+                                <button onclick="switchTab('history')" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-coffee-50 hover:text-coffee-600 dark:hover:bg-gray-700 dark:hover:text-white flex items-center gap-3 transition-colors group">
+                                    <span class="w-6 text-center text-gray-400 group-hover:text-coffee-500"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                                    Lịch sử Donate
+                                </button>
+                            </nav>
+
+                            <!-- Logout -->
+                            <div class="p-2 border-t border-gray-100 dark:border-gray-700 bg-gray-50/30">
+                                <button class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-3 transition-colors">
+                                    <span class="w-6 text-center"><i class="fa-solid fa-right-from-bracket"></i></span>
+                                    Đăng xuất
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Main Content (Removed Sidebar Grid, Centered Content) -->
+    <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Header Title for Current Tab (Dynamic) -->
+        <div class="mb-6 flex items-center justify-between">
+            <h1 id="pageTitle" class="text-2xl font-bold text-gray-900 dark:text-white">Cài đặt Profile</h1>
+            <!-- Breadcrumb or extra actions could go here -->
+        </div>
+
+        <div class="space-y-6">
             
-            <!-- Sidebar / Tab Navigation -->
-            <div class="lg:col-span-3">
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sticky top-24">
-                    <nav class="space-y-2" id="tabMenu">
-                        <button onclick="switchTab('settings')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all bg-coffee-500 text-white shadow-md" data-tab="settings">
-                            <i class="fa-solid fa-user-gear w-6 text-center"></i> Profile & Cài đặt
-                        </button>
-                        <button onclick="switchTab('analytics')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all" data-tab="analytics">
-                            <i class="fa-solid fa-chart-line w-6 text-center"></i> Thống kê & Doanh thu
-                        </button>
-                        <button onclick="switchTab('history')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all" data-tab="history">
-                            <i class="fa-solid fa-clock-rotate-left w-6 text-center"></i> Lịch sử Donate
-                        </button>
-                    </nav>
-
-                    <div class="mt-8 pt-8 border-t border-gray-100 dark:border-gray-700">
-                        <button class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors text-sm font-medium">
-                            <i class="fa-solid fa-right-from-bracket w-6 text-center"></i> Đăng xuất
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Content Area -->
-            <div class="lg:col-span-9 space-y-6">
-                
-                <!-- TAB 1: SETTINGS -->
-                <div id="settings" class="tab-content space-y-6 animate-fade-in">
-                    <!-- Basic Info -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-                            <i class="fa-solid fa-id-card text-coffee-500"></i> Thông tin cơ bản
-                        </h2>
-                        
-                        <div class="flex flex-col sm:flex-row gap-6 mb-6">
-                            <div class="flex flex-col items-center gap-3">
-                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-24 h-24 rounded-full bg-gray-100 border-4 border-white dark:border-gray-700 shadow-lg">
-                                <button class="text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 px-3 py-1 rounded-full font-medium transition-colors">Đổi Avatar</button>
-                            </div>
-                            <div class="flex-1 space-y-4 w-full">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tên hiển thị</label>
-                                        <input type="text" value="Alex Nguyễn" class="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg p-2.5 focus:ring-2 focus:ring-coffee-500 outline-none">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                                        <input type="email" value="alex@example.com" disabled class="w-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-2.5 text-gray-500 cursor-not-allowed">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio (Giới thiệu ngắn)</label>
-                                    <textarea rows="2" class="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg p-2.5 focus:ring-2 focus:ring-coffee-500 outline-none">Lập trình viên Fullstack & Chia sẻ kiến thức.</textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payment & Socials -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Coffee Price -->
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 h-fit">
-                            <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                                <i class="fa-solid fa-tag text-coffee-500"></i> Giá 1 Cup Coffee
-                            </h2>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-500 sm:text-sm">VND</span>
-                                </div>
-                                <input type="number" value="25000" class="w-full pl-12 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-coffee-500 outline-none font-bold text-lg text-coffee-600">
-                                <p class="text-xs text-gray-400 mt-2">Giá tiền mặc định khi người dùng chọn 1 ly.</p>
-                            </div>
-                        </div>
-
-                        <!-- Dynamic Social Links (Updated) -->
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-lg font-bold flex items-center gap-2">
-                                    <i class="fa-solid fa-share-nodes text-coffee-500"></i> Social Links
-                                </h2>
-                                <button onclick="addNewSocial()" class="text-xs flex items-center gap-1 bg-coffee-50 text-coffee-700 hover:bg-coffee-100 dark:bg-coffee-900/30 dark:text-coffee-300 dark:hover:bg-coffee-900/50 px-3 py-1.5 rounded-lg font-medium transition-colors border border-coffee-200 dark:border-coffee-800/50 cursor-pointer">
-                                    <i class="fa-solid fa-plus"></i> Thêm mới
-                                </button>
-                            </div>
-                            
-                            <!-- Container for Social Rows -->
-                            <div id="socialLinksContainer" class="space-y-3">
-                                <!-- JavaScript will render inputs here -->
-                            </div>
-                            <div id="noSocialsMsg" class="hidden text-center text-sm text-gray-400 italic py-4">Chưa có liên kết nào.</div>
-                        </div>
-                    </div>
-
-                    <!-- CKEditor: Thank You Message -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-envelope-open-text text-coffee-500"></i> Lời cảm ơn (Auto-reply)
-                        </h2>
-                        <p class="text-sm text-gray-500 mb-3">Email này sẽ được gửi tự động khi ai đó donate cho bạn.</p>
-                        <div class="text-gray-800">
-                            <textarea id="thankYouEditor">
-                                <p>Chào bạn <strong>{{name}}</strong>,</p>
-                                <p>Cảm ơn bạn rất nhiều vì đã mời mình <strong>{{cups}}</strong> ly cà phê! ☕</p>
-                                <p>Sự ủng hộ của bạn là động lực rất lớn để mình tiếp tục tạo ra những nội dung chất lượng.</p>
-                                <p>Chúc bạn một ngày tuyệt vời!</p>
-                                <p>Thân mến,<br>Alex Nguyễn</p>
-                            </textarea>
-                        </div>
-                    </div>
+            <!-- TAB 1: SETTINGS -->
+            <div id="settings" class="tab-content space-y-6 animate-fade-in-up">
+                <!-- Basic Info -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-id-card text-coffee-500"></i> Thông tin cơ bản
+                    </h2>
                     
-                    <div class="flex justify-end pb-8">
-                        <button class="bg-coffee-500 hover:bg-coffee-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-95 cursor-pointer">
-                            Lưu thay đổi
-                        </button>
+                    <div class="flex flex-col sm:flex-row gap-6 mb-6">
+                        <div class="flex flex-col items-center gap-3">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-24 h-24 rounded-full bg-gray-100 border-4 border-white dark:border-gray-700 shadow-lg">
+                            <button class="text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 px-3 py-1 rounded-full font-medium transition-colors cursor-pointer">Đổi Avatar</button>
+                        </div>
+                        <div class="flex-1 space-y-4 w-full">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tên hiển thị</label>
+                                    <input type="text" value="Alex Nguyễn" class="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg p-2.5 focus:ring-2 focus:ring-coffee-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                    <input type="email" value="alex@example.com" disabled class="w-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-2.5 text-gray-500 cursor-not-allowed">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio (Giới thiệu ngắn)</label>
+                                <textarea rows="2" class="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg p-2.5 focus:ring-2 focus:ring-coffee-500 outline-none">Lập trình viên Fullstack & Chia sẻ kiến thức.</textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- TAB 2: ANALYTICS (ApexCharts) -->
-                <div id="analytics" class="tab-content hidden space-y-6 animate-fade-in">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Stat Card 1 -->
-                        <div class="bg-gradient-to-br from-coffee-500 to-coffee-700 rounded-2xl p-6 text-white shadow-lg">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-coffee-100 text-sm font-medium mb-1">Tổng doanh thu</p>
-                                    <h3 class="text-3xl font-bold">12,500,000 đ</h3>
-                                </div>
-                                <div class="bg-white/20 p-2 rounded-lg"><i class="fa-solid fa-wallet text-xl"></i></div>
+                <!-- Payment & Socials -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Coffee Price -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 h-fit">
+                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-tag text-coffee-500"></i> Giá 1 Cup Coffee
+                        </h2>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">VND</span>
                             </div>
-                            <div class="mt-4 flex items-center text-sm text-coffee-100">
-                                <i class="fa-solid fa-arrow-trend-up mr-1"></i> +15% so với tháng trước
-                            </div>
-                        </div>
-                        <!-- Stat Card 2 -->
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Số ly cà phê</p>
-                                    <h3 class="text-3xl font-bold text-gray-900 dark:text-white">500</h3>
-                                </div>
-                                <div class="bg-yellow-100 text-yellow-600 p-2 rounded-lg"><i class="fa-solid fa-mug-hot text-xl"></i></div>
-                            </div>
-                            <div class="mt-4 flex items-center text-sm text-green-500">
-                                <i class="fa-solid fa-plus mr-1"></i> 12 ly hôm nay
-                            </div>
-                        </div>
-                         <!-- Stat Card 3 -->
-                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Người ủng hộ</p>
-                                    <h3 class="text-3xl font-bold text-gray-900 dark:text-white">1,240</h3>
-                                </div>
-                                <div class="bg-blue-100 text-blue-600 p-2 rounded-lg"><i class="fa-solid fa-users text-xl"></i></div>
-                            </div>
-                             <div class="mt-4 flex items-center text-sm text-gray-400">
-                                Tổng số người donate
-                            </div>
+                            <input type="number" value="25000" class="w-full pl-12 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-coffee-500 outline-none font-bold text-lg text-coffee-600">
+                            <p class="text-xs text-gray-400 mt-2">Giá tiền mặc định khi người dùng chọn 1 ly.</p>
                         </div>
                     </div>
 
-                    <!-- ApexChart Area -->
+                    <!-- Dynamic Social Links -->
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg font-bold">Biểu đồ thu nhập (30 ngày)</h2>
-                            <select class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-1 text-sm outline-none">
-                                <option>7 ngày qua</option>
-                                <option>30 ngày qua</option>
-                                <option>Năm nay</option>
-                            </select>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-share-nodes text-coffee-500"></i> Social Links
+                            </h2>
+                            <button onclick="addNewSocial()" class="text-xs flex items-center gap-1 bg-coffee-50 text-coffee-700 hover:bg-coffee-100 dark:bg-coffee-900/30 dark:text-coffee-300 dark:hover:bg-coffee-900/50 px-3 py-1.5 rounded-lg font-medium transition-colors border border-coffee-200 dark:border-coffee-800/50 cursor-pointer">
+                                <i class="fa-solid fa-plus"></i> Thêm mới
+                            </button>
                         </div>
-                        <div id="revenueChart"></div>
-                    </div>
-                </div>
-
-                <!-- TAB 3: HISTORY (DataTables) -->
-                <div id="history" class="tab-content hidden space-y-6 animate-fade-in">
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                        <h2 class="text-lg font-bold mb-6">Lịch sử giao dịch chi tiết</h2>
                         
-                        <div class="overflow-x-auto">
-                            <table id="donationTable" class="w-full text-sm text-left display nowrap" style="width:100%">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th class="px-6 py-3 rounded-tl-lg">ID</th>
-                                        <th class="px-6 py-3">Người ủng hộ</th>
-                                        <th class="px-6 py-3">Số ly</th>
-                                        <th class="px-6 py-3">Số tiền (VND)</th>
-                                        <th class="px-6 py-3">Lời nhắn</th>
-                                        <th class="px-6 py-3">Ngày</th>
-                                        <th class="px-6 py-3 rounded-tr-lg">Trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-gray-600 dark:text-gray-300">
-                                    <!-- Data will be populated by DataTables from Mock Data -->
-                                </tbody>
-                            </table>
+                        <div id="socialLinksContainer" class="space-y-3">
+                            <!-- JS Rendered -->
+                        </div>
+                        <div id="noSocialsMsg" class="hidden text-center text-sm text-gray-400 italic py-4">Chưa có liên kết nào.</div>
+                    </div>
+                </div>
+
+                <!-- CKEditor: Thank You Message -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-envelope-open-text text-coffee-500"></i> Lời cảm ơn (Auto-reply)
+                    </h2>
+                    <p class="text-sm text-gray-500 mb-3">Email này sẽ được gửi tự động khi ai đó donate cho bạn.</p>
+                    <div class="text-gray-800">
+                        <textarea id="thankYouEditor">
+                            <p>Chào bạn <strong>{{name}}</strong>,</p>
+                            <p>Cảm ơn bạn rất nhiều vì đã mời mình <strong>{{cups}}</strong> ly cà phê! ☕</p>
+                            <p>Sự ủng hộ của bạn là động lực rất lớn để mình tiếp tục tạo ra những nội dung chất lượng.</p>
+                            <p>Chúc bạn một ngày tuyệt vời!</p>
+                            <p>Thân mến,<br>Alex Nguyễn</p>
+                        </textarea>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end pb-8">
+                    <button class="bg-coffee-500 hover:bg-coffee-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-95 cursor-pointer">
+                        Lưu thay đổi
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 2: ANALYTICS (ApexCharts) -->
+            <div id="analytics" class="tab-content hidden space-y-6 animate-fade-in-up">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Stat Card 1 -->
+                    <div class="bg-gradient-to-br from-coffee-500 to-coffee-700 rounded-2xl p-6 text-white shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-coffee-100 text-sm font-medium mb-1">Tổng doanh thu</p>
+                                <h3 class="text-3xl font-bold">12,500,000 đ</h3>
+                            </div>
+                            <div class="bg-white/20 p-2 rounded-lg"><i class="fa-solid fa-wallet text-xl"></i></div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm text-coffee-100">
+                            <i class="fa-solid fa-arrow-trend-up mr-1"></i> +15% so với tháng trước
+                        </div>
+                    </div>
+                    <!-- Stat Card 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Số ly cà phê</p>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">500</h3>
+                            </div>
+                            <div class="bg-yellow-100 text-yellow-600 p-2 rounded-lg"><i class="fa-solid fa-mug-hot text-xl"></i></div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm text-green-500">
+                            <i class="fa-solid fa-plus mr-1"></i> 12 ly hôm nay
+                        </div>
+                    </div>
+                     <!-- Stat Card 3 -->
+                     <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Người ủng hộ</p>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">1,240</h3>
+                            </div>
+                            <div class="bg-blue-100 text-blue-600 p-2 rounded-lg"><i class="fa-solid fa-users text-xl"></i></div>
+                        </div>
+                         <div class="mt-4 flex items-center text-sm text-gray-400">
+                            Tổng số người donate
                         </div>
                     </div>
                 </div>
 
+                <!-- ApexChart Area -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-bold">Biểu đồ thu nhập (30 ngày)</h2>
+                        <select class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-1 text-sm outline-none">
+                            <option>7 ngày qua</option>
+                            <option>30 ngày qua</option>
+                            <option>Năm nay</option>
+                        </select>
+                    </div>
+                    <div id="revenueChart"></div>
+                </div>
             </div>
+
+            <!-- TAB 3: HISTORY (DataTables) -->
+            <div id="history" class="tab-content hidden space-y-6 animate-fade-in-up">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                    <h2 class="text-lg font-bold mb-6">Lịch sử giao dịch chi tiết</h2>
+                    
+                    <div class="overflow-x-auto">
+                        <table id="donationTable" class="w-full text-sm text-left display nowrap" style="width:100%">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th class="px-6 py-3 rounded-tl-lg">ID</th>
+                                    <th class="px-6 py-3">Người ủng hộ</th>
+                                    <th class="px-6 py-3">Số ly</th>
+                                    <th class="px-6 py-3">Số tiền (VND)</th>
+                                    <th class="px-6 py-3">Lời nhắn</th>
+                                    <th class="px-6 py-3">Ngày</th>
+                                    <th class="px-6 py-3 rounded-tr-lg">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 dark:text-gray-300">
+                                <!-- Data will be populated by DataTables from Mock Data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
     <script>
-        // --- 1. TAB SWITCHING LOGIC ---
+        // --- 1. DROPDOWN & TAB LOGIC ---
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+        let isDropdownOpen = false;
+
+        userMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (isDropdownOpen && !userDropdown.contains(e.target) && e.target !== userMenuBtn) {
+                closeDropdown();
+            }
+        });
+
+        function toggleDropdown() {
+            isDropdownOpen = !isDropdownOpen;
+            if (isDropdownOpen) {
+                userDropdown.classList.remove('dropdown-hidden');
+                userDropdown.classList.add('dropdown-visible');
+            } else {
+                closeDropdown();
+            }
+        }
+
+        function closeDropdown() {
+            isDropdownOpen = false;
+            userDropdown.classList.remove('dropdown-visible');
+            userDropdown.classList.add('dropdown-hidden');
+        }
+
         function switchTab(tabId) {
+            // Hide all contents
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Show selected content
             document.getElementById(tabId).classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-coffee-500', 'text-white', 'shadow-md');
-                btn.classList.add('text-gray-600', 'dark:text-gray-300', 'hover:bg-gray-50', 'dark:hover:bg-gray-700');
-            });
-            const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
-            activeBtn.classList.remove('text-gray-600', 'dark:text-gray-300', 'hover:bg-gray-50', 'dark:hover:bg-gray-700');
-            activeBtn.classList.add('bg-coffee-500', 'text-white', 'shadow-md');
+
+            // Update Page Title
+            const titles = {
+                'settings': 'Cài đặt Profile',
+                'analytics': 'Thống kê & Doanh thu',
+                'history': 'Lịch sử Donate'
+            };
+            document.getElementById('pageTitle').innerText = titles[tabId];
+
+            // Close Dropdown
+            closeDropdown();
         }
 
         // --- 2. CONFIG: SUPPORTED PLATFORMS ---
