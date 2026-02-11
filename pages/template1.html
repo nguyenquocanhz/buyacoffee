@@ -4,45 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buy Me a Coffee - VietQR Support</title>
-    <!-- Tailwind CSS -->
-     <script src="https://cdn.tailwindcss.com"></script>
-     <!-- Google Fonts -->
+    
+    <!-- Tailwind CSS v4 (New Browser Build) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class', // Bật chế độ dark mode thủ công
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        coffee: {
-                            50: '#fdf8f6',
-                            100: '#f2e8e5',
-                            200: '#eaddd7',
-                            300: '#e0c2b5',
-                            400: '#d2a494',
-                            500: '#ac6c57', // Primary Brand Color
-                            600: '#8c5040',
-                            700: '#753f33',
-                            800: '#61332a',
-                            900: '#512b25',
-                        },
-                        dark: {
-                            bg: '#111827',
-                            card: '#1f2937',
-                            text: '#f9fafb',
-                            muted: '#9ca3af'
-                        }
-                    }
-                }
-            }
+    <!-- Tailwind v4 Configuration using CSS -->
+    <style type="text/tailwindcss">
+        @theme {
+            /* Define Font */
+            --font-sans: 'Outfit', sans-serif;
+
+            /* Define Custom Colors (Coffee Palette) */
+            --color-coffee-50: #fdf8f6;
+            --color-coffee-100: #f2e8e5;
+            --color-coffee-200: #eaddd7;
+            --color-coffee-300: #e0c2b5;
+            --color-coffee-400: #d2a494;
+            --color-coffee-500: #ac6c57; /* Primary Brand Color */
+            --color-coffee-600: #8c5040;
+            --color-coffee-700: #753f33;
+            --color-coffee-800: #61332a;
+            --color-coffee-900: #512b25;
+
+            /* Define Dark Mode Colors (Optional, can just use gray/zinc utilities directly) */
+            --color-dark-bg: #111827;
+            --color-dark-card: #1f2937;
+            --color-dark-text: #f9fafb;
+            --color-dark-muted: #9ca3af;
         }
-    </script>
+
+        /* Cấu hình Dark Mode bằng Class cho v4 
+           Mặc định v4 dùng media query, dòng này giúp nó hiểu class="dark" trên thẻ html
+        */
+        @variant dark (&:where(.dark, .dark *));
+    </style>
+
     <style>
         body {
             transition: background-color 0.3s ease, color 0.3s ease;
@@ -96,12 +97,18 @@
                     <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-coffee-600 dark:hover:text-coffee-400 font-medium text-sm hidden sm:block transition-colors">Trang chủ</a>
                     
                     <!-- Dark Mode Toggle -->
+                    <!-- FIX: Bọc icon vào trong thẻ span để tránh xung đột display với FontAwesome -->
                     <button onclick="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none">
-                        <i class="fa-solid fa-sun hidden dark:inline-block"></i>
-                        <i class="fa-solid fa-moon inline-block dark:hidden"></i>
+                        <span class="hidden dark:inline-block">
+                            <i class="fa-solid fa-sun"></i>
+                        </span>
+                        <span class="inline-block dark:hidden">
+                            <i class="fa-solid fa-moon"></i>
+                        </span>
                     </button>
 
-                    <button class="bg-gray-900 dark:bg-white dark:text-gray-900 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors shadow-md">
+                    <!-- Login Button - Updated onclick -->
+                    <button onclick="openLoginModal()" class="bg-gray-900 dark:bg-white dark:text-gray-900 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors shadow-md cursor-pointer">
                         Đăng nhập
                     </button>
                 </div>
@@ -257,6 +264,51 @@
             </div>
         </div>
     </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform scale-95 transition-transform duration-300 relative" id="loginModalContent">
+            <!-- Close Button -->
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+            
+            <div class="p-8 text-center">
+                <div class="w-16 h-16 bg-coffee-100 dark:bg-coffee-900/30 text-coffee-600 dark:text-coffee-400 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl shadow-inner">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Chào mừng trở lại!</h3>
+                <p class="text-gray-500 dark:text-gray-400 mb-8 text-sm">Đăng nhập để lưu lịch sử ủng hộ và nhận thông báo.</p>
+                
+                <div class="space-y-3">
+                    <button class="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-white font-medium py-3 px-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors cursor-pointer group shadow-sm hover:shadow">
+                        <i class="fa-brands fa-google text-red-500 text-xl group-hover:scale-110 transition-transform"></i>
+                        <span>Tiếp tục với Google</span>
+                    </button>
+                    <button class="w-full flex items-center justify-center gap-3 bg-[#24292F] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#24292F]/90 transition-colors cursor-pointer group shadow-sm hover:shadow-lg">
+                        <i class="fa-brands fa-github text-xl group-hover:scale-110 transition-transform"></i>
+                        <span>Tiếp tục với GitHub</span>
+                    </button>
+                </div>
+
+                <div class="mt-6 flex items-center gap-4">
+                    <div class="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
+                    <span class="text-xs text-gray-400 uppercase">Hoặc</span>
+                    <div class="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
+                </div>
+
+                <div class="mt-6">
+                    <button class="text-sm text-coffee-600 dark:text-coffee-400 font-medium hover:underline">
+                        Sử dụng Email & Mật khẩu
+                    </button>
+                </div>
+
+                <p class="mt-8 text-xs text-gray-400">
+                    Bằng việc đăng nhập, bạn đồng ý với <a href="#" class="underline hover:text-coffee-500">Điều khoản</a> & <a href="#" class="underline hover:text-coffee-500">Chính sách</a>.
+                </p>
+            </div>
+        </div>
+    </div>
 
     <!-- VietQR Modal -->
     <div id="qrModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
@@ -442,6 +494,31 @@
                 currentPage = newPage;
                 renderSupporters();
             }
+        }
+
+        // --- Login Modal Logic ---
+        function openLoginModal() {
+            const modal = document.getElementById('loginModal');
+            const modalContent = document.getElementById('loginModalContent');
+            
+            modal.classList.remove('hidden');
+            void modal.offsetWidth; // Trigger reflow
+            modal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            const modalContent = document.getElementById('loginModalContent');
+            
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
 
         // --- VietQR & Modal Logic ---
