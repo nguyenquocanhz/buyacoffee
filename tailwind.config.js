@@ -9,41 +9,41 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0a68ac',     // Màu chủ đạo
+        primary: '#0a68ac',
         
-        // --- Light Mode Palette ---
-        dark: '#242526',        // Text chính
-        white: '#ffffff',       
-        accent: '#0d6efd',      
-        appGray: '#808080',        
-        slate: '#495057',       
-        border: '#e9e9e9',      
+        // Light Mode Palette
+        dark: '#242526',
+        white: '#ffffff',
+        accent: '#0d6efd',
+        gray: '#808080',
+        slate: '#495057',
+        border: '#e9e9e9',
         bgLight: '#f8f9fa',
         
-        // --- Dark Mode Palette ---
-        darker: '#18191a',      // Nền body tối
-        cardDark: '#242526',    // Nền card tối
-        bgDark: '#3a3b3c',      // Nền element tối
-        borderDark: '#3e4042',  // Border tối
+        // Dark Mode Palette
+        darker: '#18191a',
+        cardDark: '#242526',
+        bgDark: '#3a3b3c',
+        borderDark: '#3e4042',
       },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
       },
       fontSize: {
-        'heading': ['16.1px', '1.5'], 
-        'btn': ['18.2px', '1.5'],     
-        'link': ['15.05px', '1.5'],   
+        'heading': ['16.1px', '1.5'],
+        'btn': ['18.2px', '1.5'],
+        'link': ['15.05px', '1.5'],
       },
       borderRadius: {
-        'sm': '4px',    
-        'md': '8px',    
-        'lg': '10px',   
-        'xl': '12px',   // Dùng cho các nút bo tròn lớn
-        'full': '50%',  
+        'sm': '4px',
+        'md': '8px',
+        'lg': '10px',
+        'xl': '12px',
+        'full': '50%',
       },
       boxShadow: {
         'card': '0 10px 30px -10px rgba(0, 0, 0, 0.1)',
-        'dark': '0 10px 30px -10px rgba(0, 0, 0, 0.5)', // Shadow đậm hơn cho nền tối
+        'dark': '0 10px 30px -10px rgba(0, 0, 0, 0.5)',
       }
     }
   },

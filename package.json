@@ -4,8 +4,8 @@
   "description": "Profile donate su dung Tailwind CLI",
   "main": "index.html",
   "scripts": {
-    "build": "npx tailwindcss -i ./assets/input.css -o ./assets/main.css --minify",
-    "watch": "npx tailwindcss -i ./assets/input.css -o ./assets/main.css --watch"
+    "build": "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/main.css --minify",
+    "watch": "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/main.css --watch"
   },
   "keywords": [],
   "author": "",
