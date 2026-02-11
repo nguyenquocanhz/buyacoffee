@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile & Coffee Donate</title>
+    
+    <!-- Google Fonts: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <!-- Tailwind CSS (Development Mode) -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/main.css" />
+<!-- 
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Kích hoạt chế độ tối bằng class 'dark'
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0a68ac',     
+                        dark: '#242526',        // Dark text / Light bg
+                        darker: '#18191a',      // Dark Mode Background
+                        cardDark: '#242526',    // Dark Mode Card Bg
+                        white: '#ffffff',       
+                        accent: '#0d6efd',      
+                        gray: '#808080',        
+                        slate: '#495057',       
+                        border: '#e9e9e9',      
+                        borderDark: '#3e4042',  // Dark Mode Border
+                        bgLight: '#f8f9fa',
+                        bgDark: '#3a3b3c'       // Dark Mode Element Bg
+                    },
+                    fontFamily: {
+                        roboto: ['Roboto', 'sans-serif'],
+                    },
+                    fontSize: {
+                        'heading': ['16.1px', '1.5'], 
+                        'btn': ['18.2px', '1.5'],     
+                        'link': ['15.05px', '1.5'],   
+                    },
+                    borderRadius: {
+                        'sm': '4px',    
+                        'md': '8px',    
+                        'lg': '10px',   
+                        'xl': '12px',   
+                        'full': '50%',  
+                    },
+                    boxShadow: {
+                        'card': '0 10px 30px -10px rgba(0, 0, 0, 0.1)',
+                        'dark': '0 10px 30px -10px rgba(0, 0, 0, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+    -->
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Accordion transition */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .accordion-btn[aria-expanded="true"] .accordion-icon { transform: rotate(180deg); }
+        
+        /* Modal Transition */
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+        .modal-content {
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        /* Amount Button Active State */
+        .amount-btn.active {
+            background-color: #0a68ac; /* Primary */
+            color: white;
+            border-color: #0a68ac;
+        }
+        /* Dark Mode Active State Override */
+        html.dark .amount-btn.active {
+            background-color: #67e8f9; /* cyan-300 */
+            color: #18191a; /* darker bg */
+            border-color: #67e8f9;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex justify-center bg-gray-100 dark:bg-darker text-dark dark:text-slate-100 transition-colors duration-300">
+
+    <!-- Mobile Container -->
+    <main class="w-full max-w-md bg-white dark:bg-cardDark min-h-screen relative shadow-card dark:shadow-dark pb-24 transition-colors duration-300">
+        
+        <!-- Header / Cover Image -->
+        <div class="h-40 w-full bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+            <div class="absolute inset-0 bg-black/30"></div>
+            
+            <!-- Top Actions -->
+            <div class="absolute top-4 right-4 flex gap-2">
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()" class="bg-white/20 backdrop-blur-md p-2 rounded-full text-white hover:bg-white/30 transition shadow-sm">
+                    <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+                </button>
+                <!-- Share Button -->
+                <button class="bg-white/20 backdrop-blur-md p-2 rounded-full text-white hover:bg-white/30 transition shadow-sm">
+                    <i data-lucide="share-2" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="px-6 relative -mt-16 flex flex-col items-center">
+            <div class="p-1 bg-white dark:bg-cardDark rounded-full shadow-lg transition-colors">
+                <img 
+                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
+                    alt="Avatar" 
+                    class="w-28 h-28 rounded-full bg-gray-50 dark:bg-gray-800 object-cover border border-border dark:border-borderDark"
+                >
+            </div>
+            
+            <div class="text-center mt-3 w-full">
+                <!-- UPDATED: dark:text-cyan-300 for Name -->
+                <h1 class="text-heading font-bold text-dark dark:text-cyan-300 flex items-center justify-center gap-1 transition-colors">
+                    Nguyễn Văn Dev
+                    <i data-lucide="badge-check" class="w-4 h-4 text-accent fill-white dark:fill-cyan-300 dark:text-darker"></i>
+                </h1>
+                <!-- UPDATED: dark:text-gray-300 (brighter gray) -->
+                <p class="text-slate dark:text-gray-300 text-sm mt-1">Fullstack Developer | Coffee Lover ☕</p>
+                
+                <!-- Download CV Button -->
+                <a href="#" class="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-dark dark:bg-cyan-300 text-white dark:text-darker rounded-[0.75rem] text-xs font-bold shadow-md hover:scale-105 transition-transform">
+                    <i data-lucide="download" class="w-3 h-3"></i> Download CV
+                </a>
+            </div>
+
+            <!-- Social Links -->
+            <div class="mt-6 w-full">
+                <p class="text-xs text-gray dark:text-gray-400 uppercase font-bold mb-3 text-center tracking-wider">Social Contact</p>
+                <div class="flex gap-3 justify-center flex-wrap">
+                    <a href="#" class="p-3 rounded-xl bg-bgLight dark:bg-bgDark text-blue-600 dark:text-cyan-300 hover:bg-blue-600 hover:text-white dark:hover:bg-cyan-300 dark:hover:text-darker transition-all border border-border dark:border-borderDark hover:shadow-md">
+                        <i data-lucide="facebook" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="p-3 rounded-xl bg-bgLight dark:bg-bgDark text-red-500 dark:text-cyan-300 hover:bg-red-500 hover:text-white dark:hover:bg-cyan-300 dark:hover:text-darker transition-all border border-border dark:border-borderDark hover:shadow-md">
+                        <i data-lucide="youtube" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="p-3 rounded-xl bg-bgLight dark:bg-bgDark text-dark dark:text-cyan-300 hover:bg-dark hover:text-white dark:hover:bg-cyan-300 dark:hover:text-darker transition-all border border-border dark:border-borderDark hover:shadow-md">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="p-3 rounded-xl bg-bgLight dark:bg-bgDark text-black dark:text-cyan-300 hover:bg-black hover:text-white dark:hover:bg-cyan-300 dark:hover:text-darker transition-all border border-border dark:border-borderDark hover:shadow-md">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                    </a>
+                     <a href="#" class="p-3 rounded-xl bg-bgLight dark:bg-bgDark text-blue-400 dark:text-cyan-300 hover:bg-blue-500 hover:text-white dark:hover:bg-cyan-300 dark:hover:text-darker transition-all border border-border dark:border-borderDark hover:shadow-md">
+                        <i data-lucide="globe" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action Donate -->
+        <div class="px-5 mt-8">
+            <!-- UPDATED: Gradient and Borders optimized for Cyan theme -->
+            <div class="bg-gradient-to-r from-primary/10 to-accent/10 dark:from-cyan-900/20 dark:to-blue-900/20 border border-primary/20 dark:border-cyan-500/30 rounded-xl p-5 flex items-center justify-between shadow-sm cursor-pointer hover:shadow-md transition-all group" onclick="openDonateModal()">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white dark:bg-bgDark p-2.5 rounded-full shadow-sm text-primary dark:text-cyan-300 group-hover:scale-110 transition-transform">
+                        <i data-lucide="coffee" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <!-- UPDATED: Title to Cyan-300 -->
+                        <h2 class="text-heading font-bold text-primary dark:text-cyan-300">Donate Coffee</h2>
+                        <!-- UPDATED: Subtitle brighter -->
+                        <p class="text-xs text-slate dark:text-gray-300 mt-0.5">Mời mình một ly cà phê nhé!</p>
+                    </div>
+                </div>
+                <div class="bg-primary dark:bg-cyan-600 text-white p-2 rounded-lg shadow-sm group-hover:bg-accent dark:group-hover:bg-cyan-500 transition-colors">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="px-5 mt-6">
+            <h3 class="text-sm font-bold text-gray dark:text-gray-400 uppercase mb-3 px-1 tracking-wider">Hỏi đáp</h3>
+            <div class="space-y-2">
+                <div class="border border-border dark:border-borderDark rounded-xl bg-white dark:bg-bgDark overflow-hidden shadow-sm transition-colors">
+                    <button class="accordion-btn w-full px-4 py-3 flex items-center justify-between bg-white dark:bg-cardDark hover:bg-bgLight dark:hover:bg-bgDark transition-colors" onclick="toggleAccordion(this)" aria-expanded="false">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="help-circle" class="w-5 h-5 text-accent dark:text-cyan-300"></i>
+                            <span class="text-link font-semibold text-dark dark:text-white text-left">Donate dùng để làm gì?</span>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray dark:text-white accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content bg-bgLight dark:bg-bgDark border-t border-border dark:border-borderDark border-dashed">
+                        <p class="text-sm text-slate dark:text-white px-4 py-3">Toàn bộ chi phí được dùng để duy trì Server và mua Cà phê ☕.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticky Bottom Button -->
+        <div class="fixed bottom-4 left-0 right-0 px-5 max-w-md mx-auto z-40">
+             <button onclick="openDonateModal()" class="w-full bg-primary dark:bg-cyan-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/30 dark:shadow-cyan-500/20 flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all text-btn active:scale-95">
+                <i data-lucide="coffee" class="w-5 h-5"></i>
+                Mời mình 1 ly cà phê
+             </button>
+        </div>
+
+    </main>
+
+    <!-- DONATE MODAL -->
+    <div id="donate-modal" class="modal fixed inset-0 z-50 flex items-center justify-center px-4 bg-dark/60 dark:bg-black/80 backdrop-blur-sm">
+        <div class="modal-content w-full max-w-sm bg-white dark:bg-cardDark rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-colors">
+            
+            <!-- Modal Header -->
+            <div class="p-4 border-b border-border dark:border-borderDark flex items-center justify-between bg-bgLight dark:bg-bgDark">
+                <h3 class="font-bold text-dark dark:text-white text-lg flex items-center gap-2">
+                    <i data-lucide="qr-code" class="w-5 h-5 text-primary dark:text-cyan-300"></i> Quét mã ủng hộ
+                </h3>
+                <button onclick="closeDonateModal()" class="p-1 rounded-full hover:bg-gray/10 text-gray dark:text-gray-400 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body: Scrollable -->
+            <div class="p-5 overflow-y-auto no-scrollbar">
+                
+                <!-- QR Image Area (Background always white for scanning) -->
+                <div class="relative bg-white p-2 rounded-xl border border-border shadow-sm mb-5 flex justify-center min-h-[250px] items-center">
+                    <div id="qr-loading" class="absolute inset-0 flex items-center justify-center bg-white z-10 hidden">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    </div>
+                    
+                    <img 
+                        id="modal-qr-img"
+                        src="https://img.vietqr.io/image/VCB-9397426841-compact2.png?amount=20000&addInfo=Coffee%20Donate" 
+                        alt="QR Code" 
+                        class="w-full object-contain rounded-lg"
+                        onload="document.getElementById('qr-loading').classList.add('hidden')"
+                    >
+                </div>
+
+                <!-- Amount Grid -->
+                <p class="text-xs text-gray uppercase font-bold mb-2 tracking-wide text-center">Chọn mệnh giá</p>
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                    <button onclick="updateAmount(10000, this)" class="amount-btn py-2 px-1 rounded-lg border border-border dark:border-borderDark bg-bgLight dark:bg-bgDark text-dark dark:text-white font-medium text-sm hover:border-primary dark:hover:border-cyan-300 dark:hover:text-cyan-300 transition-colors">10k</button>
+                    <button onclick="updateAmount(20000, this)" class="amount-btn py-2 px-1 rounded-lg border border-border dark:border-borderDark bg-bgLight dark:bg-bgDark text-dark dark:text-white font-medium text-sm hover:border-primary dark:hover:border-cyan-300 dark:hover:text-cyan-300 transition-colors active">20k</button>
+                    <button onclick="updateAmount(50000, this)" class="amount-btn py-2 px-1 rounded-lg border border-border dark:border-borderDark bg-bgLight dark:bg-bgDark text-dark dark:text-white font-medium text-sm hover:border-primary dark:hover:border-cyan-300 dark:hover:text-cyan-300 transition-colors">50k</button>
+                    <button onclick="updateAmount(100000, this)" class="amount-btn py-2 px-1 rounded-lg border border-border dark:border-borderDark bg-bgLight dark:bg-bgDark text-dark dark:text-white font-medium text-sm hover:border-primary dark:hover:border-cyan-300 dark:hover:text-cyan-300 transition-colors">100k</button>
+                    <button onclick="updateAmount(200000, this)" class="amount-btn py-2 px-1 rounded-lg border border-border dark:border-borderDark bg-bgLight dark:bg-bgDark text-dark dark:text-white font-medium text-sm hover:border-primary dark:hover:border-cyan-300 dark:hover:text-cyan-300 transition-colors">200k</button>
+                    <button onclick="updateAmount(500000, this)" class="amount-btn py-2 px-1 rounded-lg border border-border dark:border-borderDark bg-bgLight dark:bg-bgDark text-dark dark:text-white font-medium text-sm hover:border-primary dark:hover:border-cyan-300 dark:hover:text-cyan-300 transition-colors">500k</button>
+                </div>
+
+                <!-- Account Info -->
+                <div class="bg-blue-50 dark:bg-cyan-900/10 p-3 rounded-lg border border-blue-100 dark:border-cyan-900/30 flex items-center justify-between cursor-pointer active:scale-95 transition-transform" onclick="copyToClipboard('9397426841')">
+                    <div>
+                        <p class="text-[10px] text-slate dark:text-cyan-200 uppercase">MB Bank</p>
+                        <!-- UPDATED: Cyan-300 for Account Number -->
+                        <p class="text-sm font-bold text-primary dark:text-cyan-300">939 742 6841</p>
+                    </div>
+                    <i data-lucide="copy" class="w-4 h-4 text-primary dark:text-cyan-300"></i>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-border dark:border-borderDark bg-bgLight dark:bg-bgDark">
+                <button onclick="downloadQR()" class="w-full bg-dark dark:bg-cyan-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-opacity-90 flex items-center justify-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i> Tải QR về máy
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-dark/90 dark:bg-white/90 backdrop-blur text-white dark:text-dark text-sm py-2 px-4 rounded-full opacity-0 pointer-events-none transition-all duration-300 z-[60] shadow-lg flex items-center gap-2 translate-y-2">
+        <i data-lucide="check-circle" class="w-4 h-4 text-green-400 dark:text-green-600"></i>
+        <span>Đã sao chép!</span>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- Theme Toggle Logic ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+                icon.setAttribute('data-lucide', 'moon'); // Icon trăng
+            } else {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+                icon.setAttribute('data-lucide', 'sun'); // Icon mặt trời
+            }
+            lucide.createIcons(); // Re-render icon
+        }
+
+        // Init Theme on Load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.getElementById('theme-icon').setAttribute('data-lucide', 'sun');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.getElementById('theme-icon').setAttribute('data-lucide', 'moon');
+        }
+        lucide.createIcons();
+
+        // --- Modal & QR Logic (Existing) ---
+        function openDonateModal() { document.getElementById('donate-modal').classList.add('open'); }
+        function closeDonateModal() { document.getElementById('donate-modal').classList.remove('open'); }
+        document.getElementById('donate-modal').addEventListener('click', function(e) { if (e.target === this) closeDonateModal(); });
+
+        const BANK_ID = 'MB'; const ACCOUNT_NO = '9397426841'; const TEMPLATE = 'compact2'; const CONTENT = 'Coffee Donate';
+        function updateAmount(amount, btnElement) {
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+            const loading = document.getElementById('qr-loading');
+            const img = document.getElementById('modal-qr-img');
+            loading.classList.remove('hidden');
+            img.src = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-${TEMPLATE}.png?amount=${amount}&addInfo=${encodeURIComponent(CONTENT)}`;
+        }
+
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            document.querySelectorAll('.accordion-btn').forEach(btn => { if (btn !== button) { btn.setAttribute('aria-expanded', 'false'); btn.nextElementSibling.style.maxHeight = null; }});
+            button.setAttribute('aria-expanded', !isExpanded);
+            content.style.maxHeight = !isExpanded ? content.scrollHeight + "px" : null;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('opacity-0', 'translate-y-2');
+                toast.classList.add('translate-y-0');
+                setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-2'); toast.classList.remove('translate-y-0'); }, 2000);
+            });
+        }
+        
+        function downloadQR() {
+            const img = document.getElementById('modal-qr-img');
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.download = `vietqr-donate-${Date.now()}.png`;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
